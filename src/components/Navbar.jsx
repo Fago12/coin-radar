@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Avatar, Button, Menu, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ import {
   FundOutlined,
   MoneyCollectOutlined,
   BulbOutlined,
+  MenuOutlined,
 } from '@ant-design/icons';
 
 const items = [
@@ -33,6 +35,27 @@ const items = [
 ];
 
 const Navbar = () => {
+  const [activeMenu, setActiveMenu] = useState(true);
+  const [screenSize, setScreenSize] = useState(undefined);
+
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (screenSize <= 800) {
+      setActiveMenu(false);
+    } else {
+      setActiveMenu(true);
+    }
+  }, [screenSize]);
+
   return (
     <div className='nav-container'>
       <div className='logo-container'>
@@ -42,10 +65,15 @@ const Navbar = () => {
           <Link to='/'>Cryptoverse</Link>
         </Typography.Title>
 
-        {/* <Button className="menu-control-container"></Button> */}
+        <Button
+          className='menu-control-container'
+          onClick={() => setActiveMenu(!activeMenu)}
+        >
+          <MenuOutlined />
+        </Button>
       </div>
 
-      <Menu theme='dark' items={items} />
+      {activeMenu && <Menu theme='dark' items={items} />}
     </div>
   );
 };

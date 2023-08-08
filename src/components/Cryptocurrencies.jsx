@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Col, Input, Row } from 'antd';
+import millify from 'millify';
 
 import { useGetCryptosQuery } from '../services/cryptoApi';
-import millify from 'millify';
+import Loader from './Loader';
 
 const Cryptocurrencies = ({ simplified }) => {
   const count = simplified ? 10 : 100;
@@ -29,7 +30,7 @@ const Cryptocurrencies = ({ simplified }) => {
 
   // console.log(cryptos);
 
-  if (isFetching || !cryptosList?.data?.coins) return 'Loading...';
+  if (isFetching || !cryptosList?.data?.coins) return <Loader />;
 
   return (
     <>
@@ -43,7 +44,7 @@ const Cryptocurrencies = ({ simplified }) => {
       )}
 
       {cryptos.length === 0 ? (
-        <p>No matching results found.</p>
+        <Loader />
       ) : (
         <Row gutter={[32, 32]} className='crypto-card-container'>
           {cryptos?.map((currency) => (
@@ -54,11 +55,15 @@ const Cryptocurrencies = ({ simplified }) => {
               className='crypto-card'
               key={currency.uuid}
             >
-              <Link to={`crypto/${currency.id}`}>
+              <Link to={`/crypto/${currency.uuid}`}>
                 <Card
                   title={`${currency.rank}. ${currency.name}`}
                   extra={
-                    <img className='crypto-image' src={currency.iconUrl} />
+                    <img
+                      className='crypto-image'
+                      src={currency.iconUrl}
+                      alt='coin-icon'
+                    />
                   }
                   hoverable
                 >

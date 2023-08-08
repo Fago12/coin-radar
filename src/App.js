@@ -10,14 +10,14 @@ import {
   CryptoDetails,
   Cryptocurrencies,
   Exchanges,
-  Hompage,
+  Homepage,
   News,
 } from './components';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<RootLayout />}>
-      <Route index element={<Hompage />} />
+      <Route index element={<Homepage />} />
       <Route path='cryptocurrencies' element={<Cryptocurrencies />} />
       <Route path='exchanges' element={<Exchanges />} />
       <Route path='crypto/:coinId' element={<CryptoDetails />} />
